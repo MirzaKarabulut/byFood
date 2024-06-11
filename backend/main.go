@@ -1,39 +1,24 @@
-package initializers
+package main
 
 import (
-	"context"
-	"log"
-	"os"
-	"strings"
+	"backend/initializers"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
-func ConnectDB() *mongo.Client {
-    // Get environment variables
-    databaseURI := os.Getenv("DATABASE")
-    databasePassword := os.Getenv("DATABASE_PASSWORD")
+func init() {
+  initializers.LoadEnvVars()
+    initializers.Connect()
+}
 
-    // Replace <password> placeholder with actual password
-    databaseURI = strings.Replace(databaseURI, "<password>", databasePassword, 1)
-
-    // Set client options
-    clientOptions := options.Client().ApplyURI(databaseURI)
-
-    // Connect to MongoDB
-    client, err := mongo.Connect(context.TODO(), clientOptions)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // Check the connection
-    err = client.Ping(context.TODO(), nil)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    return client
+func main() {
+    r := gin.Default()
+    r.Use(cors.Default())
+    r.GET("/books", initializers.GetAllBooks)
+    r.POST("/books", initializers.CreateBook)
+    r.GET("/books/:id", initializers.GetBookByID)
+    r.PUT("/books/:id", initializers.UpdateBook)
+    r.DELETE("/books/:id", initializers.DeleteBook)
+    r.Run(":8080")
 }
