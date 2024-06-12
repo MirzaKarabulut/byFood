@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/controllers"
 	"backend/initializers"
 
 	"github.com/gin-contrib/cors"
@@ -15,10 +16,10 @@ func init() {
 func main() {
     r := gin.Default()
     r.Use(cors.Default())
-    r.GET("/books", initializers.GetAllBooks)
-    r.POST("/books", initializers.CreateBook)
-    r.GET("/books/:id", initializers.GetBookByID)
-    r.PUT("/books/:id", initializers.UpdateBook)
-    r.DELETE("/books/:id", initializers.DeleteBook)
+    r.GET("/books", controllers.GetAllBooks)
+    r.POST("/books", controllers.CreateBook)
+    r.GET("/books/:id", controllers.GetBookByID)
+    r.PUT("/books/:id", controllers.UpdateBook)
+    r.DELETE("/books/:id", controllers.DeleteBook)
     r.Run(":8080")
 }
