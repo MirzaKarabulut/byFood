@@ -9,8 +9,3 @@ type Book struct {
 	Author     	 	*string             `json:"author"`
 	Description 	*string             `json:"description"`
 }
-
-
-func MigrateBooks(db *gorm.DB) {
-	 db.AutoMigrate(&Book{})
-}
