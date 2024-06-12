@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-  initializers.LoadEnvVars()
+    initializers.LoadEnvVars()
     initializers.Connect()
 }
 
@@ -21,5 +21,5 @@ func main() {
     r.GET("/books/:id", controllers.GetBookByID)
     r.PUT("/books/:id", controllers.UpdateBook)
     r.DELETE("/books/:id", controllers.DeleteBook)
-    r.Run(":8080")
+    r.Run()
 }
