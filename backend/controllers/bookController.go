@@ -30,15 +30,10 @@ func CreateBook(c *gin.Context) {
 			ReleaseDate string
 	}
 	c.Bind(&body)
+	fmt.Println(body)
 
 	book := models.Book{Title: &body.Title,Author: &body.Author, Description: &body.Description, ReleaseDate: &body.ReleaseDate}
-	result := initializers.DB.Create(&book)
-
-	if result.Error != nil {
-		fmt.Println(result.Error)
-		c.Status(400)
-		return
-	}
+	initializers.DB.Create(&book)
 
 	c.JSON(200, book)
 }
