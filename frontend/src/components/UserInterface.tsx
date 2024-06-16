@@ -5,7 +5,9 @@ import CardComponent from "./CardComponent";
 interface Book {
   id: number;
   title: string;
+  author: string;
   description: string;
+  releaseDate: string;
 }
 
 interface UserInterfaceProps {
@@ -15,8 +17,8 @@ interface UserInterfaceProps {
 const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
   const apiURL = "http://localhost:8080";
   const [books, setBooks] = useState<Book[]>([]);
-  const [newBook, setNewBook] = useState({ title: "", description: "" });
-  const [updateBook, setUpdateBook] = useState({ id: "", title: "", description: "" });
+  const [newBook, setNewBook] = useState({ title: "", description: "",author: "",releaseDate: ""});
+  const [updateBook, setUpdateBook] = useState({ id: "", title: "", description: "",author: "",releaseDate: "" });
   
   // Define styles based on the backendName
   const backgroundColors: { [key: string]: string } = {
@@ -45,10 +47,10 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
 
 
   // Delete a book
-  const deleteBook = async (userId: number) => {
+  const deleteBook = async (bookID: number) => {
     try {
-      await axios.delete(`${apiURL}/api/${backendName}/books/${booksId}`);
-      setBooks(books.filter((book) => book.id !== userId));
+      await axios.delete(`${apiURL}/books/${bookID}`);
+      setBooks(books.filter((book) => book.id !== bookID));
     } catch (error) {
       console.error('Error deleting book:', error);
     }
