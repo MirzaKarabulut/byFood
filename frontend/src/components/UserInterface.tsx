@@ -45,6 +45,36 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     fetchData();
   }, [backendName, apiURL]);
 
+  // Ceate a new book
+  const createBook = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${apiURL}/books`, newBook);
+      setBooks([response.data, ...books]);
+      setNewBook({ title: "", description: "",author: "",releaseDate: "" });
+    } catch (error) {
+      console.error("Error creating book:", error);
+    }
+  };
+
+  // Update a book
+   const handleUpdateBook = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${apiURL}/books/${updateBook.id}`, { title: updateBook.title, author: updateBook.author, description: updateBook.description, releaseDate: updateBook.releaseDate});
+      setUpdateBook({  id: "", title: "", description: "",author: "",releaseDate: ""  });
+      setBooks(
+        books.map((book) => {
+          if (book.id === parseInt(updateBook.id)) {
+            return { ...book, title: updateBook.title, author: updateBook.author, description: updateBook.description, releaseDate: updateBook.releaseDate};
+          }
+          return book;
+        })
+      );
+    } catch (error) {
+      console.error('Error updating book:', error);
+    }
+  };
 
   // Delete a book
   const deleteBook = async (bookID: number) => {
@@ -57,8 +87,71 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
   }
   return (
     <div className={`user-interface ${bgColor} ${backendName} w-full max-w-md p-4 my-4 rounded shadow`}>
-       <h2 className="text-xl font-bold text-center text-white mb-6">{`${backendName.charAt(0).toUpperCase() + backendName.slice(1)} Backend`}</h2>
+      <h2 className="text-xl font-bold text-center text-white mb-6">{`${backendName.charAt(0).toUpperCase() + backendName.slice(1)} Backend`}</h2>
       
+      {/* Create a new book */}
+      <form onSubmit={createBook} className="mb-6 p-4 bg-blue-100 rounded shadow">
+        <input
+          placeholder="Title"
+          value={newBook.title}
+          onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Author"
+          value={newBook.author}
+          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Description"
+          value={newBook.description }
+          onChange={(e) => setNewBook({ ...newBook, description : e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Release Date"
+          value={newBook.releaseDate}
+          onChange={(e) => setNewBook({ ...newBook, releaseDate: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <button type="submit" className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          Add Book
+        </button>
+      </form>
+      
+      {/* Update a book */}
+      
+      <form onSubmit={handleUpdateBook} className="mb-6 p-4 bg-blue-100 rounded shadow">
+        <input
+          placeholder="Title"
+          value={updateBook.title}
+          onChange={(e) => setUpdateBook({ ...updateBook, title: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Author"
+          value={updateBook.author}
+          onChange={(e) => setUpdateBook({ ...updateBook, author: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Description"
+          value={updateBook.description}
+          onChange={(e) => setUpdateBook({ ...updateBook, description: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <input
+          placeholder="Release Date"
+          value={updateBook.releaseDate}
+          onChange={(e) => setUpdateBook({ ...updateBook, releaseDate: e.target.value })}
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <button type="submit" className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          Update Book
+        </button>
+      </form>
+
       {/* Display books */}
       <div className="space-y-4">
         {books.map((book) => (
