@@ -13,9 +13,14 @@ func GetAllBooks(c *gin.Context) {
 	LogEvent(c, "Get All Books", "Book", "Success", "Retrieved all books")
 	// Log the request
 	LogRequest(c, "200")
+
 	// Retrieve all books from the database
 	var books []models.Book
-	initializers.DB.Find(&books)
+	result := initializers.DB.Find(&books)
+	if result.Error != nil {
+		ErrorHandler(c, result.Error)
+		return
+	}
 
 	// Return the books as JSON response
 	c.JSON(200, books)
@@ -30,7 +35,11 @@ func GetBookByID(c *gin.Context) {
 
 	id := c.Param("id")
 	var book models.Book
-	initializers.DB.First(&book, id)
+	result := initializers.DB.First(&book, id)
+	if result.Error != nil {
+		ErrorHandler(c, result.Error)
+		return
+	}
 
 	c.JSON(200, book)
 }
@@ -41,20 +50,20 @@ func CreateBook(c *gin.Context) {
 		Title       string `json:"Title" validate:"required"`
 		Author      string `json:"Author" validate:"required"`
 		Description string `json:"Description" validate:"required"`
-		ReleaseDate string `json:"ReleaseDate" validate:"required" validate:"datetime=2006-01-02"`
+		ReleaseDate string `json:"ReleaseDate" validate:"required,datetime=2006-01-02"`
 	}
 	err := c.Bind(&body)
 	if err != nil {
+		ErrorHandler(c, err)
 		return
 	}
 
 	validate := validator.New()
-
 	err = validate.Struct(body)
 	if err != nil {
 		LogEvent(c, "Create Book", "Book", "Validation", err.Error())
 		LogRequest(c, "400")
-		c.JSON(400, gin.H{"error": err.Error()})
+		ErrorHandler(c, err)
 		return
 	}
 
@@ -66,7 +75,7 @@ func CreateBook(c *gin.Context) {
 		LogEvent(c, "Create Book", "Book", "Database", result.Error.Error())
 		LogRequest(c, "400")
 		tx.Rollback()
-		c.JSON(400, result.Error)
+		ErrorHandler(c, result.Error)
 		return
 	}
 
@@ -87,11 +96,23 @@ func UpdateBook(c *gin.Context) {
 	}
 	err := c.Bind(&body)
 	if err != nil {
+		ErrorHandler(c, err)
 		return
 	}
+
 	var book models.Book
-	initializers.DB.First(&book, id)
-	initializers.DB.Model(&book).Updates(models.Book{Title: &body.Title, Author: &body.Author, Description: &body.Description, ReleaseDate: &body.ReleaseDate})
+	result := initializers.DB.First(&book, id)
+	if result.Error != nil {
+		ErrorHandler(c, result.Error)
+		return
+	}
+
+	result = initializers.DB.Model(&book).Updates(models.Book{Title: &body.Title, Author: &body.Author, Description: &body.Description, ReleaseDate: &body.ReleaseDate})
+	if result.Error != nil {
+		ErrorHandler(c, result.Error)
+		return
+	}
+
 	c.JSON(200, book)
 }
 
@@ -103,6 +124,11 @@ func DeleteBook(c *gin.Context) {
 	LogRequest(c, "200")
 
 	id := c.Param("id")
-	initializers.DB.Delete(&models.Book{}, id)
-	c.JSON(200, id)
+	result := initializers.DB.Delete(&models.Book{}, id)
+	if result.Error != nil {
+		ErrorHandler(c, result.Error)
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Book deleted successfully", "id": id})
 }
