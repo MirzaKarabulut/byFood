@@ -3,6 +3,7 @@ package controllers
 import (
 	"backend/initializers"
 	"backend/models"
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func LogRequest(c *gin.Context, responseStatus string) {
 	result := tx.Create(&logBody)
 	if result.Error != nil {
 		tx.Rollback()
-		ErrorHandler(c, result.Error)
+		ErrorHandler(c, http.StatusInternalServerError, result.Error, "Failed to log request", "Database error")
 		return
 	}
 	tx.Commit()
@@ -42,7 +43,7 @@ func LogEvent(c *gin.Context, eventName string, source string, tags string, desc
 	result := tx.Create(&logBody)
 	if result.Error != nil {
 		tx.Rollback()
-		ErrorHandler(c, result.Error)
+		ErrorHandler(c, http.StatusInternalServerError, result.Error, "Failed to log event", "Database error")
 		return
 	}
 	tx.Commit()
