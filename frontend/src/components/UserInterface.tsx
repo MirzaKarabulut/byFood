@@ -57,6 +57,24 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     return true;
   };
 
+  // Get book by ID
+  const getBookByID = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Assert the type of the target element to HTMLInputElement. Because HTMLInputElement does not have a value property by default
+    const bookIDInput = e.currentTarget[0] as HTMLInputElement;
+    const bookID = parseInt(bookIDInput.value);
+    console.log(HTMLInputElement, bookID);
+
+    try {
+      const response = await axios.get(`${apiURL}/books/${bookID}`);
+      setBooks([response.data]);
+    } catch (error) {
+      setError("Book not found");
+      console.error("Book not found", error);
+    }
+}
+
   // Create a new book
   const createBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -115,6 +133,18 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
       <button onClick={() => window.location.reload()} className={`${btnColor} text-white py-2 px-4 rounded`}>
         Refresh Books
       </button>
+
+      {/* Get book by ID */}
+      <form onSubmit={getBookByID} className="mb-6 p-4 bg-blue-100 rounded shadow">
+        <input
+          placeholder="ID"
+          className="mb-2 w-full p-2 border border-gray-300 rounded"
+        />
+        <button type="submit" className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          Get Book by ID
+        </button>
+      </form>
+      
 
       {/* Create a new book */}
       <form onSubmit={createBook} className="mb-6 p-4 bg-blue-100 rounded shadow">
