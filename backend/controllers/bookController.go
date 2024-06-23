@@ -9,25 +9,35 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// GetBooks             godoc
+// @Summary      Get books array
+// @Description  Responds with the list of all books as JSON.
+// @Tags         books
+// @Produce      json
+// @Success      200  {array}  models.Book
+// @Router       /books [get]
 func GetAllBooks(c *gin.Context) {
-    // Retrieve all books from the database
-    var books []models.Book
-    result := initializers.DB.Find(&books)
+    var book []models.Book
+    result := initializers.DB.Find(&book)
     if result.Error != nil {
         ErrorHandler(c, http.StatusInternalServerError, result.Error, "Failed to retrieve books", "Database error")
         return
     }
 
-    // Log event
     LogEvent(c, "Get All Books", "Book", "Success", "Retrieved all books")
-    // Log the request
     LogRequest(c, "200")
 
-    // Return the books as JSON response
-    c.JSON(http.StatusOK, books)
+    c.JSON(http.StatusOK, book)
 }
 
-
+// GetBooks             godoc
+// @Summary      Get books array
+// @Description  Respond with id of book
+// @Tags         books
+// @Produce      json
+// @Param        id  path  string  true  "Book ID"
+// @Success      200  {array}  models.Book
+// @Router       /books/{id} [get]
 func GetBookByID(c *gin.Context) {
     id := c.Param("id")
     var book models.Book
@@ -37,17 +47,23 @@ func GetBookByID(c *gin.Context) {
         return
     }
 
-    // Log event
+
     LogEvent(c, "Get Book By ID", "Book", "Success", "Retrieved book by ID")
-    // Log the request
     LogRequest(c, "200")
 
     c.JSON(http.StatusOK, book)
 }
 
-
+// CreateBook           godoc
+// @Summary      Create a new book
+// @Description  Create a new book with the given details.
+// @Tags         books
+// @Accept       json
+// @Produce      json
+// @Param        book  body      models.Book  true  "Book JSON"
+// @Success      201  {object}  models.Book
+// @Router       /books [post] 
 func CreateBook(c *gin.Context) {
-    // Parse the request body
     var body struct {
         Title       string `json:"title" validate:"required"`
         Author      string `json:"author" validate:"required"`
@@ -80,14 +96,24 @@ func CreateBook(c *gin.Context) {
     }
     tx.Commit()
 
-    // Log event
+
     LogEvent(c, "Create Book", "Book", "Success", "Book created successfully")
-    // Log the request
     LogRequest(c, "201")
 
     c.JSON(http.StatusCreated, book)
 }
 
+
+// UpdateBook           godoc
+// @Summary      Update a book
+// @Description  Update the details of a book with the given ID.
+// @Tags         books
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.Book
+// @Param        book  body      models.Book  true  "Book JSON"
+// @Router       /books/{id} [put]
+// @Param        id  path  string  true  "Book ID"
 func UpdateBook(c *gin.Context) {
     id := c.Param("id")
     var body struct {
@@ -119,15 +145,21 @@ func UpdateBook(c *gin.Context) {
         return
     }
 
-    // Log event
+
     LogEvent(c, "Update Book", "Book", "Success", "Book updated successfully")
-    // Log the request
     LogRequest(c, "200")
 
     c.JSON(http.StatusOK, book)
 }
 
-
+// DeleteBook           godoc
+// @Summary      Delete a book
+// @Description  Delete the book with the given ID.
+// @Tags         books
+// @Produce      json
+// @Param        id  path  string  true  "delete by ID"
+// @Success      200  {object}  models.Book
+// @Router       /books/{id} [delete]
 func DeleteBook(c *gin.Context) {
     id := c.Param("id")
     result := initializers.DB.Delete(&models.Book{}, id)
@@ -136,11 +168,9 @@ func DeleteBook(c *gin.Context) {
         return
     }
 
-    // Log event
+
     LogEvent(c, "Delete Book", "Book", "Success", "Book deleted successfully")
-    // Log the request
     LogRequest(c, "200")
 
     c.JSON(http.StatusOK, gin.H{"message": "Book deleted successfully", "id": id})
 }
-

@@ -1,0 +1,104 @@
+basePath: /
+definitions:
+  models.Book:
+    properties:
+      author:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      release_date:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - author
+    - description
+    - release_date
+    - title
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a simple API for a book store
+  title: ByFood API
+  version: "1.0"
+paths:
+  /books:
+    get:
+      description: Responds with the list of all books as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Get books array
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the given details.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Create a new book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      description: Delete the book with the given ID.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Delete a book
+      tags:
+      - books
+    get:
+      description: Respond with id of book
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Get books array
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update the details of a book with the given ID.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Update a book
+      tags:
+      - books
+swagger: "2.0"
