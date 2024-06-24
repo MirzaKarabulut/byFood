@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// LogRequest logs details of a request to the database
 func LogRequest(c *gin.Context, responseStatus string) {
 	logBody := models.RequestLog{
 		UserAgent: c.Request.UserAgent(),
@@ -28,7 +27,6 @@ func LogRequest(c *gin.Context, responseStatus string) {
 	tx.Commit()
 }
 
-// LogEvent logs an event to the database
 func LogEvent(c *gin.Context, eventName string, source string, tags string, description string) {
 	logBody := models.EventLog{
 		EventName:   eventName,

@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   models.Book:
     properties:
@@ -24,12 +23,8 @@ definitions:
     - release_date
     - title
     type: object
-host: localhost:8080
 info:
   contact: {}
-  description: This is a simple API for a book store
-  title: ByFood API
-  version: "1.0"
 paths:
   /books:
     get:
@@ -50,6 +45,13 @@ paths:
       consumes:
       - application/json
       description: Create a new book with the given details.
+      parameters:
+      - description: Book JSON
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
       produces:
       - application/json
       responses:
@@ -63,6 +65,12 @@ paths:
   /books/{id}:
     delete:
       description: Delete the book with the given ID.
+      parameters:
+      - description: delete by ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -75,6 +83,12 @@ paths:
       - books
     get:
       description: Respond with id of book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -91,6 +105,18 @@ paths:
       consumes:
       - application/json
       description: Update the details of a book with the given ID.
+      parameters:
+      - description: Book JSON
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -101,4 +127,26 @@ paths:
       summary: Update a book
       tags:
       - books
+  /process-url:
+    post:
+      consumes:
+      - application/json
+      description: Create a new URL with the given details.
+      parameters:
+      - description: URL
+        in: body
+        name: url
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+      summary: Create a new URL
+      tags:
+      - urls
 swagger: "2.0"
