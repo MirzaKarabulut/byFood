@@ -19,7 +19,7 @@ This is a simple API for a book store, developed using the Go programming langua
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/MirzaKarabulut/byFood
 2. Navigate to the project directory:
   cd ByFood
 
