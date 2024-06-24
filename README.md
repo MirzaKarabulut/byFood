@@ -43,38 +43,38 @@ go mod tidy
 
 byFood/
 
- backend/
+ - backend/
  
-   controllers/       # Business logic handlers
+   - controllers/       # Business logic handlers
    
-   models/            # Database models
+   - models/            # Database models
    
-   migrate/           # Database migration files
+   - migrate/           # Database migration files
    
-   docs/              # API documentation files
+   - docs/              # API documentation files
    
-   initializers/      # Setup scripts (e.g., database connection)
+   - initializers/      # Setup scripts (e.g., database connection)
    
-   go.mod             # Go module definitions
+   - go.mod             # Go module definitions
    
-   go.sum             # Go module checksums
+   - go.sum             # Go module checksums
    
-   main.go            # Entry point of the backend application
+   - main.go            # Entry point of the backend application
    
   
- frontend/
+ - frontend/
  
-   public/            # Static files like `index.html`, images, etc.
+   - public/            # Static files like `index.html`, images, etc.
    
-   src/               # Contains components, pages, and styles.
+   - src/               # Contains components, pages, and styles.
    
-      components/    # React components
+      - components/    # React components
       
-      pages/         # React pages
+      - pages/         # React pages
       
-      styles/        # CSS and styling files
+      - styles/        # CSS and styling files
       
-   package.json       # Next.js dependencies and scripts
+   - package.json       # Next.js dependencies and scripts
    
  .gitignore             # Specifies intentionally untracked files to ignore
  
