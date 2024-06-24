@@ -42,26 +42,44 @@ go mod tidy
 ## Project Structure
 
 byFood/
-├── backend/
-│   ├── controllers/       # Business logic handlers
-│   ├── models/            # Database models
-│   ├── migrate/           # Database migration files
-│   ├── docs/              # API documentation files
-│   ├── initializers/      # Setup scripts (e.g., database connection)
-│   ├── go.mod             # Go module definitions
-│   ├── go.sum             # Go module checksums
-│   └── main.go            # Entry point of the backend application
-│
-├── frontend/
-│   ├── public/            # Static files like `index.html`, images, etc.
-│   ├── src/               # Contains components, pages, and styles.
-│   │   ├── components/    # React components
-│   │   ├── pages/         # React pages
-│   │   ├── styles/        # CSS and styling files
-│   ├── package.json       # Next.js dependencies and scripts
-│
-├── .gitignore             # Specifies intentionally untracked files to ignore
-├── README.md              # Project overview and setup instructions
+
+ backend/
+ 
+   controllers/       # Business logic handlers
+   
+   models/            # Database models
+   
+   migrate/           # Database migration files
+   
+   docs/              # API documentation files
+   
+   initializers/      # Setup scripts (e.g., database connection)
+   
+   go.mod             # Go module definitions
+   
+   go.sum             # Go module checksums
+   
+   main.go            # Entry point of the backend application
+   
+  
+ frontend/
+ 
+   public/            # Static files like `index.html`, images, etc.
+   
+   src/               # Contains components, pages, and styles.
+   
+      components/    # React components
+      
+      pages/         # React pages
+      
+      styles/        # CSS and styling files
+      
+   package.json       # Next.js dependencies and scripts
+   
+ .gitignore             # Specifies intentionally untracked files to ignore
+ 
+ README.md              # Project overview and setup instructions
+ 
 
 
   ## Endpoint Usage
