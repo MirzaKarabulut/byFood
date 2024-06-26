@@ -21,7 +21,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
   const [updateBook, setUpdateBook] = useState({ id: "", title: "", description: "", author: "", releaseDate: "" });
   const [error, setError] = useState<string | null>(null);
 
-  // Define styles based on the backendName
   const backgroundColors: { [key: string]: string } = {
     go: 'bg-cyan-500',
   };
@@ -33,7 +32,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
   const bgColor = backgroundColors[backendName as keyof typeof backgroundColors] || 'bg-gray-200';
   const btnColor = buttonColors[backendName as keyof typeof buttonColors] || 'bg-gray-700 hover:bg-gray-600';
 
-  // Fetch all books
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,9 +43,8 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
       }
     };
     fetchData();
-  }, [backendName, apiURL]);
+  }, [apiURL]);
 
-  // Validate book input
   const validateBook = (book: any) => {
     if (!book.title || !book.author || !book.description || !book.releaseDate) {
       setError("All fields are required");
@@ -57,11 +54,9 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     return true;
   };
 
-  // Get book by ID
   const getBookByID = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Assert the type of the target element to HTMLInputElement. Because HTMLInputElement does not have a value property by default
     const bookIDInput = e.currentTarget[0] as HTMLInputElement;
     const bookID = parseInt(bookIDInput.value);
     console.log(HTMLInputElement, bookID);
@@ -75,7 +70,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     }
 }
 
-  // Create a new book
   const createBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateBook(newBook)) return;
@@ -90,7 +84,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     }
   };
 
-  // Update a book
   const handleUpdateBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateBook(updateBook)) return;
@@ -112,7 +105,6 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
     }
   };
 
-  // Delete a book
   const deleteBook = async (bookID: number) => {
     try {
       await axios.delete(`${apiURL}/books/${bookID}`);
@@ -214,7 +206,7 @@ const UserInterface: React.FC<UserInterfaceProps> = ({ backendName }) => {
         </button>
       </form>
 
-      {/* Display books */}
+      {/* Delete and display books */}
       <div className="space-y-4">
         {books.map((book) => (
           <div key={book.ID} className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
